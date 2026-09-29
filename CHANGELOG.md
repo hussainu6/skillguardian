@@ -4,6 +4,30 @@ All notable changes to this project are documented here. The format is based on
 [Keep a Changelog](https://keepachangelog.com/) and this project adheres to
 [Semantic Versioning](https://semver.org/).
 
+## [0.2.0] - 2026-09-29
+
+### Added
+
+- **Configuration file** `.skillguardianrc.json` (found at or above the scan
+  path): `disable` rules, a default `failOn`, and a `minSeverity` filter.
+- **Inline suppression** comments: `skillguardian-ignore [RULES]` on or above a
+  line, and `skillguardian-ignore-file` for a whole file.
+- New flags: `--min-severity`, `--no-suppress`, `--no-config`.
+- Three more rules: `SS014` insecure `http://` endpoint, `SS015` hardcoded API
+  key/token (masked in output, skips placeholders), `SS016` auto-running
+  install/lifecycle hook that executes a command.
+- `docs/FINDINGS.md` — a real-world precision-tuning write-up.
+- Architecture diagram in the README.
+
+### Changed
+
+- Major false-positive reduction after scanning four large public repos:
+  `SS001` no longer flags emoji zero-width joiners, `SS003` requires a real
+  `eval(`/`exec(` call on decoded/fetched input, `SS014` ignores XML/schema
+  namespaces, `SS002` requires a read verb, `SS008` requires action-paired
+  urgency. Critical flags across the test corpus fell ~14× with no loss of true
+  detections.
+
 ## [0.1.2] - 2026-09-29
 
 ### Added

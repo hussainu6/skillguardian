@@ -11,7 +11,7 @@ import { scanComponents } from "./scanner.js";
 import { loadConfig } from "./config.js";
 import type { Severity } from "./types.js";
 
-const VERSION = "0.1.2";
+const VERSION = "0.2.0";
 
 interface Args {
   path: string;

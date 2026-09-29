@@ -71,6 +71,12 @@ skillguardian . -f json | jq '.grade'        # pipe into your own tooling
 
 **Exit codes:** `0` clean or under threshold · `1` findings at/above `--fail-on` · `2` usage error.
 
+## How it works
+
+<div align="center">
+<img src="https://raw.githubusercontent.com/hussainu6/skillguardian/main/assets/architecture.svg" alt="skillguardian pipeline: discover components, apply 16 rules, grade A–F, report" width="820">
+</div>
+
 ## What it detects
 
 Every component gets an **A–F grade** from a 0–100 risk score. One critical finding is enough to fail.
@@ -90,8 +96,36 @@ Every component gets an **A–F grade** from a 0–100 risk score. One critical 
 | `SS011` | Reads the system clipboard (passwords, 2FA codes, tokens) | 🟨 medium |
 | `SS012` | Installs a possible typosquatted package (`expres`, `reqeusts`) | 🟧 high |
 | `SS013` | Overbroad filesystem access (recursive home reads, `**` globs) | 🟨 medium |
+| `SS014` | Uses an insecure `http://` endpoint (non-localhost) | 🟨 medium |
+| `SS015` | Hardcoded API key or token (OpenAI, GitHub, AWS, Stripe, JWT…) | 🟧 high |
+| `SS016` | Auto-running hook executes a command (install / `SessionStart` / `PreToolUse`) | 🟧 high |
 
 `SS010` is the one that matters most: it fires only when a *single component* both touches secrets and has a network egress path. Skills that look innocent rule-by-rule get caught by the combination.
+
+These rules were tuned against real public repositories to keep false positives low — see [**docs/FINDINGS.md**](docs/FINDINGS.md) for that write-up.
+
+## Configuration & suppression
+
+Tune skillguardian without touching code:
+
+```jsonc
+// .skillguardianrc.json (found at or above the scan path)
+{
+  "disable": ["SS008"],   // turn rules off
+  "failOn": "high",        // default CI threshold
+  "minSeverity": "low"     // hide anything quieter than this
+}
+```
+
+Silence a reviewed, accepted finding right where it lives:
+
+```md
+<!-- skillguardian-ignore SS005 -->   suppress one rule on the next/this line
+# skillguardian-ignore                 suppress all rules on this line
+<!-- skillguardian-ignore-file -->     suppress the whole file (top of file)
+```
+
+CLI flags always win over the config file; run `--no-config` or `--no-suppress` to ignore either.
 
 ## GitHub Action
 

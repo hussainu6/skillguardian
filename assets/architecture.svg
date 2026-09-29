@@ -1,0 +1,78 @@
+<svg width="1000" height="360" viewBox="0 0 1000 360" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="skillguardian pipeline: discover, apply rules, grade, report">
+  <defs>
+    <linearGradient id="abg" x1="0" y1="0" x2="1000" y2="360" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#0B1020"/><stop offset="1" stop-color="#1A1440"/>
+    </linearGradient>
+    <linearGradient id="accent" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#A78BFA"/><stop offset="1" stop-color="#7C3AED"/>
+    </linearGradient>
+    <marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M0 0 L10 5 L0 10 z" fill="#7C6B9A"/>
+    </marker>
+    <style>
+      .t { font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; }
+      .box { fill: #161B33; stroke: #2A2450; stroke-width: 1.5; }
+      .title { fill: #E6EDF3; font-weight: 700; }
+      .sub { fill: #8B93B7; }
+      .step { fill: #C4B5FD; font-weight: 700; letter-spacing: 2px; }
+    </style>
+  </defs>
+
+  <rect width="1000" height="360" rx="20" fill="url(#abg)"/>
+  <text x="40" y="52" class="t title" font-size="24">How skillguardian works</text>
+  <text x="40" y="78" class="t sub" font-size="14">Static pipeline — nothing it scans is ever executed</text>
+
+  <!-- pipeline boxes -->
+  <g class="t">
+    <!-- 1 Discover -->
+    <rect class="box" x="40" y="110" width="180" height="96" rx="12"/>
+    <text x="130" y="138" text-anchor="middle" class="step" font-size="11">DISCOVER</text>
+    <text x="130" y="164" text-anchor="middle" class="title" font-size="14">Find components</text>
+    <text x="130" y="184" text-anchor="middle" class="sub" font-size="11.5">skills · plugins · MCP</text>
+
+    <!-- 2 Rules -->
+    <rect class="box" x="270" y="110" width="180" height="96" rx="12"/>
+    <text x="360" y="138" text-anchor="middle" class="step" font-size="11">ANALYZE</text>
+    <text x="360" y="164" text-anchor="middle" class="title" font-size="14">16 detection rules</text>
+    <text x="360" y="184" text-anchor="middle" class="sub" font-size="11.5">SS001 – SS016</text>
+
+    <!-- 3 Grade -->
+    <rect class="box" x="500" y="110" width="180" height="96" rx="12"/>
+    <text x="590" y="138" text-anchor="middle" class="step" font-size="11">SCORE</text>
+    <text x="590" y="164" text-anchor="middle" class="title" font-size="14">Grade each A–F</text>
+    <text x="590" y="184" text-anchor="middle" class="sub" font-size="11.5">0–100 risk score</text>
+
+    <!-- 4 Report -->
+    <rect class="box" x="730" y="110" width="230" height="96" rx="12"/>
+    <text x="845" y="138" text-anchor="middle" class="step" font-size="11">REPORT</text>
+    <text x="845" y="164" text-anchor="middle" class="title" font-size="14">Four output formats</text>
+    <text x="845" y="184" text-anchor="middle" class="sub" font-size="11.5">terminal · JSON · SARIF · MD</text>
+  </g>
+
+  <!-- arrows between boxes -->
+  <g stroke="#7C6B9A" stroke-width="2" fill="none">
+    <line x1="222" y1="158" x2="266" y2="158" marker-end="url(#arrow)"/>
+    <line x1="452" y1="158" x2="496" y2="158" marker-end="url(#arrow)"/>
+    <line x1="682" y1="158" x2="726" y2="158" marker-end="url(#arrow)"/>
+  </g>
+
+  <!-- entry points -->
+  <text x="40" y="256" class="t sub" font-size="12.5" letter-spacing="1">RUN IT AS</text>
+  <g class="t">
+    <g>
+      <rect x="40" y="270" width="290" height="56" rx="10" fill="#12172B" stroke="#2A2450"/>
+      <text x="60" y="296" class="title" font-size="14">CLI</text>
+      <text x="60" y="315" class="sub" font-size="12">npx skillguardian .</text>
+    </g>
+    <g>
+      <rect x="355" y="270" width="290" height="56" rx="10" fill="#12172B" stroke="#2A2450"/>
+      <text x="375" y="296" class="title" font-size="14">GitHub Action</text>
+      <text x="375" y="315" class="sub" font-size="12">findings on the Security tab</text>
+    </g>
+    <g>
+      <rect x="670" y="270" width="290" height="56" rx="10" fill="#12172B" stroke="#2A2450"/>
+      <text x="690" y="296" class="title" font-size="14">JS API</text>
+      <text x="690" y="315" class="sub" font-size="12">import { scan } from "skillguardian"</text>
+    </g>
+  </g>
+</svg>
