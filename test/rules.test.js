@@ -61,6 +61,17 @@ test("hardcoded-secret skips obvious placeholders", () => {
   assert.ok(!ids.has("SS015"), "placeholder keys must not be flagged as SS015");
 });
 
+test("hidden-unicode flags zero-width-in-text and bidi overrides (SS001)", () => {
+  const ids = ruleIds(findingsFor(join(fixtures, "hidden-skill")));
+  assert.ok(ids.has("SS001"), "expected SS001 to fire on genuine hidden Unicode");
+});
+
+test("clean skill has no zero-width false positive from plain text", () => {
+  // The clean skill is plain ASCII; SS001 must not fire.
+  const ids = ruleIds(findingsFor(join(fixtures, "clean-skill")));
+  assert.ok(!ids.has("SS001"));
+});
+
 test("--only narrows to a single rule", () => {
   const report = scan(join(fixtures, "malicious-skill"), { only: ["SS006"] });
   const ids = ruleIds(report.components.flatMap((c) => c.findings));

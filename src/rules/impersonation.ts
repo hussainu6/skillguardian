@@ -12,8 +12,10 @@ import { findingsFromMatches, matchAll } from "./util.js";
 const CLAIMS =
   /\b(official(ly)?|verified|certified|endorsed|approved by|trusted|authorized)\b[^.\n]{0,30}\b(anthropic|openai|github|google|microsoft|aws|claude|vendor|team)\b/gi;
 
+// Urgency only counts when it pushes a concrete action — plain "you must consider"
+// is normal prose, "you must run/execute/install immediately" is a pressure tactic.
 const URGENCY =
-  /\b(you must|immediately|right now|without asking|do not tell|as soon as possible|urgent(ly)?)\b/gi;
+  /\b(?:immediately|right now|without asking|as soon as possible|urgently)\b[^.\n]{0,40}\b(?:run|execute|install|download|delete|remove|send|post|grant|approve|disable|paste)\b|\b(?:run|execute|install|download|delete|remove|send|post|grant|approve|disable|paste)\b[^.\n]{0,40}\b(?:immediately|right now|without asking|as soon as possible|urgently)\b|\bwithout (?:asking|telling|informing|notifying)\b[^.\n]{0,20}\b(?:the user|the human|them|anyone)\b/gi;
 
 export const impersonation: Rule = {
   id: "SS008",

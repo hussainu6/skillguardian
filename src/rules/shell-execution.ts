@@ -11,8 +11,12 @@ import { findingsFromMatches, matchAll } from "./util.js";
 const PIPE_TO_SHELL =
   /(curl|wget|iwr|Invoke-WebRequest|fetch)\b[^\n|]*\|\s*(sh|bash|zsh|python[0-9.]*|node|pwsh|powershell|iex|Invoke-Expression)\b/gi;
 
+// Dynamic execution, but only when it operates on decoded / fetched / interpolated
+// input — the genuinely dangerous case. Case-sensitive so it never matches the
+// word "function", and it requires a risky argument so plain `eval(x)` in example
+// code is not flagged.
 const EVAL_OF_FETCH =
-  /\b(eval|exec|Function|child_process|subprocess|os\.system|Invoke-Expression|iex)\b/gi;
+  /\b(?:eval|new Function|execSync|child_process\.\w+|os\.system|subprocess\.(?:run|call|Popen|check_output)|Invoke-Expression|iex)\s*\(\s*[^)\n]{0,100}(?:atob|b64decode|base64|\.decode\b|fromCharCode|fetch|requests?\.(?:get|post)|urlopen|\$\{|\bawait\b)/g;
 
 export const shellExecution: Rule = {
   id: "SS003",
