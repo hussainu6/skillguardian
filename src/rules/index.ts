@@ -12,6 +12,9 @@ import { exfiltrationCombo } from "./exfiltration-combo.js";
 import { clipboardAccess } from "./clipboard-access.js";
 import { typosquatting } from "./typosquatting.js";
 import { overbroadAccess } from "./overbroad-access.js";
+import { insecureEndpoint } from "./insecure-endpoint.js";
+import { hardcodedSecret } from "./hardcoded-secret.js";
+import { autorunHooks } from "./autorun-hooks.js";
 
 /** All built-in rules, in stable id order. */
 export const RULES: Rule[] = [
@@ -28,6 +31,9 @@ export const RULES: Rule[] = [
   clipboardAccess,
   typosquatting,
   overbroadAccess,
+  insecureEndpoint,
+  hardcodedSecret,
+  autorunHooks,
 ];
 
 export {
@@ -44,4 +50,7 @@ export {
   clipboardAccess,
   typosquatting,
   overbroadAccess,
+  insecureEndpoint,
+  hardcodedSecret,
+  autorunHooks,
 };

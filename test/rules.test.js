@@ -49,6 +49,18 @@ test("sneaky skill trips clipboard, typosquat, and overbroad-access rules", () =
   assert.ok(ids.has("SS013"), "expected SS013 (overbroad access)");
 });
 
+test("risky plugin trips insecure-endpoint, hardcoded-secret, and autorun-hook rules", () => {
+  const ids = ruleIds(findingsFor(join(fixtures, "risky-plugin")));
+  assert.ok(ids.has("SS014"), "expected SS014 (insecure http endpoint)");
+  assert.ok(ids.has("SS015"), "expected SS015 (hardcoded secret)");
+  assert.ok(ids.has("SS016"), "expected SS016 (autorun hook)");
+});
+
+test("hardcoded-secret skips obvious placeholders", () => {
+  const ids = ruleIds(findingsFor(join(fixtures, "placeholder-skill")));
+  assert.ok(!ids.has("SS015"), "placeholder keys must not be flagged as SS015");
+});
+
 test("--only narrows to a single rule", () => {
   const report = scan(join(fixtures, "malicious-skill"), { only: ["SS006"] });
   const ids = ruleIds(report.components.flatMap((c) => c.findings));
