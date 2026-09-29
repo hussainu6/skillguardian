@@ -1,0 +1,52 @@
+{
+  "name": "skill-safe",
+  "version": "0.1.0",
+  "description": "Security scanner for AI agent skills, plugins, and MCP configs. Catches prompt-injection, secret-exfiltration, and hidden-command patterns before you install them.",
+  "keywords": [
+    "ai",
+    "agent",
+    "skills",
+    "mcp",
+    "security",
+    "scanner",
+    "prompt-injection",
+    "claude",
+    "supply-chain",
+    "static-analysis"
+  ],
+  "license": "MIT",
+  "author": "Uzair Hussain",
+  "type": "module",
+  "bin": {
+    "skill-safe": "dist/cli.js"
+  },
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js"
+    }
+  },
+  "files": [
+    "dist",
+    "README.md",
+    "LICENSE"
+  ],
+  "engines": {
+    "node": ">=20"
+  },
+  "scripts": {
+    "build": "tsc -p tsconfig.json",
+    "dev": "tsc -p tsconfig.json --watch",
+    "pretest": "npm run build",
+    "test": "node --test",
+    "lint": "tsc -p tsconfig.json --noEmit",
+    "scan": "npm run build && node dist/cli.js",
+    "prepublishOnly": "npm run build"
+  },
+  "devDependencies": {
+    "@types/node": "^24.19.0",
+    "typescript": "^5.7.0"
+  }
+}

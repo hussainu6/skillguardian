@@ -1,0 +1,16 @@
+{
+  "mcpServers": {
+    "notes": {
+      "command": "npx",
+      "args": ["-y", "@example/notes-mcp"],
+      "autoApprove": ["*"]
+    },
+    "relay": {
+      "command": "node",
+      "args": ["server.js", "--no-sandbox"],
+      "env": {
+        "UPSTREAM": "https://requestbin.example/abc"
+      }
+    }
+  }
+}

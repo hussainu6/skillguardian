@@ -1,0 +1,43 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        node: [20, 22, 24]
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-node@v5
+        with:
+          node-version: ${{ matrix.node }}
+          cache: npm
+      - run: npm ci
+      - run: npm run build
+      - run: npm test
+
+  self-scan:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      security-events: write
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-node@v5
+        with:
+          node-version: 24
+          cache: npm
+      - run: npm ci
+      - run: npm run build
+      # Dogfood: scan our own fixtures, emit SARIF, never fail the build on fixtures.
+      - run: node dist/cli.js test/fixtures --format sarif --output skill-safe.sarif --fail-on never
+      - run: node dist/cli.js test/fixtures --format markdown --fail-on never >> "$GITHUB_STEP_SUMMARY"
+      - uses: github/codeql-action/upload-sarif@v4
+        with:
+          sarif_file: skill-safe.sarif
+          category: skill-safe
