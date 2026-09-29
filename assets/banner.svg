@@ -1,0 +1,58 @@
+<svg width="1200" height="300" viewBox="0 0 1200 300" fill="none" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="skillguardian — security scanner for AI agent skills, plugins and MCP configs">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1200" y2="300" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#0B1020"/>
+      <stop offset="0.55" stop-color="#141C36"/>
+      <stop offset="1" stop-color="#1E1440"/>
+    </linearGradient>
+    <linearGradient id="shield" x1="140" y1="70" x2="260" y2="240" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#A78BFA"/>
+      <stop offset="1" stop-color="#7C3AED"/>
+    </linearGradient>
+    <linearGradient id="wordmark" x1="330" y1="120" x2="330" y2="185" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#FFFFFF"/>
+      <stop offset="1" stop-color="#C7D2FE"/>
+    </linearGradient>
+    <filter id="soft" x="-20%" y="-20%" width="140%" height="140%">
+      <feDropShadow dx="0" dy="6" stdDeviation="10" flood-color="#7C3AED" flood-opacity="0.35"/>
+    </filter>
+  </defs>
+
+  <rect width="1200" height="300" rx="28" fill="url(#bg)"/>
+
+  <!-- subtle grid dots -->
+  <g fill="#FFFFFF" opacity="0.04">
+    <circle cx="980" cy="60" r="3"/><circle cx="1040" cy="60" r="3"/><circle cx="1100" cy="60" r="3"/><circle cx="1160" cy="60" r="3"/>
+    <circle cx="980" cy="120" r="3"/><circle cx="1040" cy="120" r="3"/><circle cx="1100" cy="120" r="3"/><circle cx="1160" cy="120" r="3"/>
+    <circle cx="980" cy="180" r="3"/><circle cx="1040" cy="180" r="3"/><circle cx="1100" cy="180" r="3"/><circle cx="1160" cy="180" r="3"/>
+    <circle cx="980" cy="240" r="3"/><circle cx="1040" cy="240" r="3"/><circle cx="1100" cy="240" r="3"/><circle cx="1160" cy="240" r="3"/>
+  </g>
+
+  <!-- shield emblem -->
+  <g filter="url(#soft)" transform="translate(96,66)">
+    <path d="M84 4 L156 30 V96 C156 140 126 170 84 186 C42 170 12 140 12 96 V30 Z" fill="url(#shield)"/>
+    <path d="M84 4 L156 30 V96 C156 140 126 170 84 186 C42 170 12 140 12 96 V30 Z" fill="none" stroke="#DDD6FE" stroke-opacity="0.35" stroke-width="2"/>
+    <path d="M54 96 l22 22 l40 -46" fill="none" stroke="#0B1020" stroke-width="14" stroke-linecap="round" stroke-linejoin="round"/>
+    <path d="M54 96 l22 22 l40 -46" fill="none" stroke="#FFFFFF" stroke-width="7" stroke-linecap="round" stroke-linejoin="round"/>
+  </g>
+
+  <!-- wordmark -->
+  <text x="300" y="150" font-family="'Segoe UI', Roboto, Helvetica, Arial, sans-serif" font-size="72" font-weight="800" fill="url(#wordmark)" letter-spacing="-1">skillguardian</text>
+  <text x="302" y="196" font-family="'Segoe UI', Roboto, Helvetica, Arial, sans-serif" font-size="26" font-weight="500" fill="#8B93B7">Security scanner for AI agent skills, plugins &amp; MCP configs</text>
+
+  <!-- pills -->
+  <g font-family="'Segoe UI', Roboto, Helvetica, Arial, sans-serif" font-size="18" font-weight="600">
+    <g transform="translate(302,222)">
+      <rect width="150" height="36" rx="18" fill="#7C3AED" fill-opacity="0.18" stroke="#7C3AED" stroke-opacity="0.5"/>
+      <text x="75" y="24" text-anchor="middle" fill="#C4B5FD">prompt-injection</text>
+    </g>
+    <g transform="translate(466,222)">
+      <rect width="152" height="36" rx="18" fill="#7C3AED" fill-opacity="0.18" stroke="#7C3AED" stroke-opacity="0.5"/>
+      <text x="76" y="24" text-anchor="middle" fill="#C4B5FD">secret-exfiltration</text>
+    </g>
+    <g transform="translate(632,222)">
+      <rect width="132" height="36" rx="18" fill="#7C3AED" fill-opacity="0.18" stroke="#7C3AED" stroke-opacity="0.5"/>
+      <text x="66" y="24" text-anchor="middle" fill="#C4B5FD">hidden-commands</text>
+    </g>
+  </g>
+</svg>

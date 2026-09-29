@@ -12,7 +12,7 @@ export interface ScanOptions {
   rules?: Rule[];
 }
 
-const VERSION = "0.1.0";
+const VERSION = "0.1.1";
 
 function selectRules(opts: ScanOptions): Rule[] {
   let rules = opts.rules ?? RULES;

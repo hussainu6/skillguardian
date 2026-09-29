@@ -4,6 +4,16 @@ All notable changes to this project are documented here. The format is based on
 [Keep a Changelog](https://keepachangelog.com/) and this project adheres to
 [Semantic Versioning](https://semver.org/).
 
+## [0.1.1] - 2026-09-29
+
+### Changed
+
+- Renamed the package to **skillguardian** (npm blocked `skill-safe` as too
+  similar to an existing package). CLI command, GitHub Action, and docs updated;
+  detection engine and behavior are unchanged.
+- Added a project banner and `repository`/`homepage`/`bugs` metadata so the npm
+  page links back to the repo and renders the banner.
+
 ## [0.1.0] - 2026-09-29
 
 Initial release.

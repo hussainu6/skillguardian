@@ -1,6 +1,6 @@
 {
   "name": "skillguardian",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "Security scanner for AI agent skills, plugins, and MCP configs. Catches prompt-injection, secret-exfiltration, and hidden-command patterns before you install them.",
   "keywords": [
     "ai",
@@ -16,6 +16,14 @@
   ],
   "license": "MIT",
   "author": "Uzair Hussain",
+  "homepage": "https://github.com/hussainu6/skillguardian#readme",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/hussainu6/skillguardian.git"
+  },
+  "bugs": {
+    "url": "https://github.com/hussainu6/skillguardian/issues"
+  },
   "type": "module",
   "bin": {
     "skillguardian": "dist/cli.js"

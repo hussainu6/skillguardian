@@ -1,13 +1,14 @@
 <div align="center">
 
-# 🛡️ skillguardian
+<img src="https://raw.githubusercontent.com/hussainu6/skillguardian/main/assets/banner.svg" alt="skillguardian — security scanner for AI agent skills, plugins & MCP configs" width="100%">
 
-**Security scanner for AI agent skills, plugins, and MCP configs.**
+<br><br>
 
-Catch prompt-injection, secret-exfiltration, and hidden-command patterns *before* you install them.
+**Catch prompt-injection, secret-exfiltration, and hidden-command patterns _before_ you install them.**
 
 [![CI](https://github.com/hussainu6/skillguardian/actions/workflows/ci.yml/badge.svg)](https://github.com/hussainu6/skillguardian/actions/workflows/ci.yml)
 [![npm](https://img.shields.io/npm/v/skillguardian.svg)](https://www.npmjs.com/package/skillguardian)
+[![npm downloads](https://img.shields.io/npm/dm/skillguardian.svg)](https://www.npmjs.com/package/skillguardian)
 [![license](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
 [![node](https://img.shields.io/badge/node-%3E%3D20-brightgreen.svg)](https://nodejs.org)
 
