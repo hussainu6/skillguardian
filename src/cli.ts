@@ -8,6 +8,7 @@ import { renderMarkdown } from "./reporters/markdown.js";
 import { renderSarif } from "./reporters/sarif.js";
 import { renderTerminal } from "./reporters/terminal.js";
 import { scanComponents } from "./scanner.js";
+import { loadConfig } from "./config.js";
 import type { Severity } from "./types.js";
 
 const VERSION = "0.1.2";
@@ -17,15 +18,27 @@ interface Args {
   format: "terminal" | "json" | "sarif" | "markdown";
   output?: string;
   failOn: Severity | "never";
+  failOnExplicit: boolean;
+  minSeverity?: Severity;
   only?: string[];
   skip?: string[];
+  noConfig: boolean;
+  suppress: boolean;
   command: "scan" | "rules" | "help" | "version";
 }
 
 const SEVERITY_ORDER: Record<Severity, number> = { critical: 0, high: 1, medium: 2, low: 3, info: 4 };
 
 function parseArgs(argv: string[]): Args {
-  const args: Args = { path: ".", format: "terminal", failOn: "high", command: "scan" };
+  const args: Args = {
+    path: ".",
+    format: "terminal",
+    failOn: "high",
+    failOnExplicit: false,
+    noConfig: false,
+    suppress: true,
+    command: "scan",
+  };
   const positional: string[] = [];
 
   for (let i = 0; i < argv.length; i++) {
@@ -52,12 +65,23 @@ function parseArgs(argv: string[]): Args {
         break;
       case "--fail-on":
         args.failOn = argv[++i] as Args["failOn"];
+        args.failOnExplicit = true;
+        break;
+      case "--min-severity":
+        args.minSeverity = argv[++i] as Severity;
         break;
       case "--only":
         args.only = (argv[++i] ?? "").split(",").map((s) => s.trim()).filter(Boolean);
         break;
       case "--skip":
         args.skip = (argv[++i] ?? "").split(",").map((s) => s.trim()).filter(Boolean);
+        break;
+      case "--no-config":
+        args.noConfig = true;
+        break;
+      case "--no-suppress":
+      case "--no-suppressions":
+        args.suppress = false;
         break;
       default:
         if (a === "scan") break;
@@ -90,8 +114,21 @@ OPTIONS
                        critical | high | medium | low | never   (default: high)
   --only <ids>         Run only these rule ids (comma-separated), e.g. --only SS003,SS010
   --skip <ids>         Skip these rule ids
+  --min-severity <sev> Hide findings below this severity from the report
+  --no-suppress        Ignore inline skillguardian-ignore comments
+  --no-config          Ignore any .skillguardianrc.json
   -v, --version        Print version
   -h, --help           Show this help
+
+CONFIG (.skillguardianrc.json, found at or above the scan path)
+  { "disable": ["SS008"], "failOn": "high", "minSeverity": "low" }
+  CLI flags always override the config file.
+
+INLINE SUPPRESSION
+  Add a comment on, or directly above, a flagged line:
+    <!-- skillguardian-ignore SS005 -->   suppress one rule
+    # skillguardian-ignore                suppress all rules on that line
+    <!-- skillguardian-ignore-file -->    suppress the whole file (top 10 lines)
 
 EXAMPLES
   npx skillguardian                         Scan the current directory
@@ -138,8 +175,18 @@ function main(): void {
     process.exit(2);
   }
 
+  const config = args.noConfig ? {} : loadConfig(target);
+  const skip = [...(args.skip ?? []), ...(config.disable ?? [])];
+  const failOn = args.failOnExplicit ? args.failOn : config.failOn ?? args.failOn;
+  const minSeverity = args.minSeverity ?? config.minSeverity;
+
   const components = discover(target);
-  const report = scanComponents(components, args.path, { only: args.only, skip: args.skip });
+  const report = scanComponents(components, args.path, {
+    only: args.only,
+    skip: skip.length ? skip : undefined,
+    minSeverity,
+    suppressions: args.suppress,
+  });
   const rendered = render(report, args.format);
 
   if (args.output) {
@@ -149,8 +196,8 @@ function main(): void {
     process.stdout.write(rendered + "\n");
   }
 
-  if (args.failOn !== "never") {
-    const limit = SEVERITY_ORDER[args.failOn];
+  if (failOn !== "never") {
+    const limit = SEVERITY_ORDER[failOn];
     const tripped = report.components.some((c) =>
       c.findings.some((f) => SEVERITY_ORDER[f.severity] <= limit),
     );

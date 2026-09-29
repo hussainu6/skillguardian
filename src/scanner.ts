@@ -10,6 +10,10 @@ export interface ScanOptions {
   skip?: string[];
   /** Override the rule set entirely (used in tests). */
   rules?: Rule[];
+  /** Drop findings below this severity from the report. */
+  minSeverity?: Severity;
+  /** Honor inline `skillguardian-ignore` comments (default: true). */
+  suppressions?: boolean;
 }
 
 const VERSION = "0.1.2";
@@ -24,13 +28,18 @@ function selectRules(opts: ScanOptions): Rule[] {
 /** Scan a single already-loaded component. */
 export function scanComponent(component: Component, opts: ScanOptions = {}): ComponentResult {
   const rules = selectRules(opts);
-  const findings: Finding[] = [];
+  let findings: Finding[] = [];
   for (const rule of rules) {
     try {
       findings.push(...rule.scan(component));
     } catch {
       // A misbehaving rule must never crash the scan.
     }
+  }
+  if (opts.suppressions !== false) findings = findings.filter((f) => !isSuppressed(component, f));
+  if (opts.minSeverity) {
+    const limit = SEVERITY_ORDER[opts.minSeverity];
+    findings = findings.filter((f) => SEVERITY_ORDER[f.severity] <= limit);
   }
   findings.sort(bySeverityThenLocation);
   const score = scoreFindings(findings);
@@ -40,6 +49,48 @@ export function scanComponent(component: Component, opts: ScanOptions = {}): Com
     score,
     grade: gradeForScore(score),
   };
+}
+
+// Matches `skillguardian-ignore` / `-ignore-line` / `-disable` with an optional rule list.
+const IGNORE_LINE = /skillguardian-(?:ignore|disable)(?:-line|-next-line)?\b(?:\s*[:=]?\s*([A-Za-z0-9,\s]+))?/i;
+const IGNORE_FILE = /skillguardian-(?:ignore|disable)-file\b(?:\s*[:=]?\s*([A-Za-z0-9,\s]+))?/i;
+
+function ruleListMatches(captured: string | undefined, ruleId: string): boolean {
+  if (!captured || !captured.trim()) return true; // bare marker suppresses everything
+  const ids = captured
+    .toUpperCase()
+    .split(/[,\s]+/)
+    .map((s) => s.trim())
+    .filter(Boolean);
+  return ids.includes(ruleId.toUpperCase());
+}
+
+/**
+ * A finding is suppressed when its own line, or the line directly above it,
+ * carries a `skillguardian-ignore` marker (optionally naming this rule), or when
+ * the file opens with a `skillguardian-ignore-file` marker.
+ */
+function isSuppressed(component: Component, finding: Finding): boolean {
+  const file = component.files.find((f) => f.relativePath === finding.file);
+  if (!file) return false;
+  const lines = file.content.split(/\r?\n/);
+
+  // File-level marker in the first 10 lines.
+  for (const line of lines.slice(0, 10)) {
+    const m = IGNORE_FILE.exec(line);
+    if (m && ruleListMatches(m[1], finding.ruleId)) return true;
+  }
+
+  if (finding.line === undefined) return false;
+  const here = lines[finding.line - 1];
+  const above = lines[finding.line - 2];
+  for (const line of [here, above]) {
+    if (line === undefined) continue;
+    if (IGNORE_FILE.test(line)) continue; // handled above; don't double-match
+    const m = IGNORE_LINE.exec(line);
+    if (m && ruleListMatches(m[1], finding.ruleId)) return true;
+  }
+  return false;
 }
 
 /** Scan many components and roll up totals. */

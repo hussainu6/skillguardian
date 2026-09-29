@@ -13,6 +13,7 @@ export { renderJson } from "./reporters/json.js";
 export { renderSarif } from "./reporters/sarif.js";
 export { renderMarkdown } from "./reporters/markdown.js";
 export { renderTerminal } from "./reporters/terminal.js";
+export { loadConfig, type SkillguardianConfig } from "./config.js";
 export * from "./types.js";
 
 import { discover } from "./discover.js";
