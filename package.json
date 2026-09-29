@@ -1,5 +1,5 @@
 {
-  "name": "skill-safe",
+  "name": "skillguardian",
   "version": "0.1.0",
   "description": "Security scanner for AI agent skills, plugins, and MCP configs. Catches prompt-injection, secret-exfiltration, and hidden-command patterns before you install them.",
   "keywords": [
@@ -18,7 +18,7 @@
   "author": "Uzair Hussain",
   "type": "module",
   "bin": {
-    "skill-safe": "dist/cli.js"
+    "skillguardian": "dist/cli.js"
   },
   "main": "dist/index.js",
   "types": "dist/index.d.ts",

@@ -1,8 +1,8 @@
 /**
- * skill-safe — programmatic API.
+ * skillguardian — programmatic API.
  *
  * @example
- * import { scan } from "skill-safe";
+ * import { scan } from "skillguardian";
  * const report = scan("./my-skill");
  * if (report.grade === "F") process.exit(1);
  */

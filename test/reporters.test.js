@@ -18,7 +18,7 @@ test("SARIF is valid 2.1.0 with rules and results", () => {
   const sarif = JSON.parse(renderSarif(scan(malicious)));
   assert.equal(sarif.version, "2.1.0");
   const run = sarif.runs[0];
-  assert.equal(run.tool.driver.name, "skill-safe");
+  assert.equal(run.tool.driver.name, "skillguardian");
   assert.ok(run.tool.driver.rules.length >= 10);
   assert.ok(run.results.length >= 1);
   for (const r of run.results) {
@@ -30,14 +30,14 @@ test("SARIF is valid 2.1.0 with rules and results", () => {
 
 test("markdown report includes a grade and table", () => {
   const md = renderMarkdown(scan(malicious));
-  assert.match(md, /skill-safe report/);
+  assert.match(md, /skillguardian report/);
   assert.match(md, /Overall grade/);
   assert.match(md, /\| Grade \|/);
 });
 
 test("terminal report renders without throwing", () => {
   const txt = renderTerminal(scan(malicious));
-  assert.ok(txt.includes("skill-safe"));
+  assert.ok(txt.includes("skillguardian"));
   assert.ok(txt.includes("Overall"));
 });
 

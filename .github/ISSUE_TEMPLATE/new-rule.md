@@ -1,6 +1,6 @@
 ---
 name: New detection rule
-about: Suggest a pattern skill-safe should flag
+about: Suggest a pattern skillguardian should flag
 title: "[rule] "
 labels: ["rule", "enhancement"]
 ---

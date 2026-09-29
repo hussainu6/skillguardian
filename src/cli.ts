@@ -73,12 +73,12 @@ function parseArgs(argv: string[]): Args {
 }
 
 const HELP = `
-skill-safe v${VERSION} — security scanner for AI agent skills, plugins & MCP configs
+skillguardian v${VERSION} — security scanner for AI agent skills, plugins & MCP configs
 
 USAGE
-  skill-safe [scan] [path] [options]
-  skill-safe rules
-  skill-safe --help
+  skillguardian [scan] [path] [options]
+  skillguardian rules
+  skillguardian --help
 
 ARGUMENTS
   path                 File or directory to scan (default: current directory)
@@ -94,16 +94,16 @@ OPTIONS
   -h, --help           Show this help
 
 EXAMPLES
-  npx skill-safe                         Scan the current directory
-  npx skill-safe ./skills                Scan a folder of skills
-  npx skill-safe . -f sarif -o out.sarif Emit SARIF for GitHub code scanning
-  npx skill-safe . --fail-on critical    Only fail CI on critical findings
+  npx skillguardian                         Scan the current directory
+  npx skillguardian ./skills                Scan a folder of skills
+  npx skillguardian . -f sarif -o out.sarif Emit SARIF for GitHub code scanning
+  npx skillguardian . --fail-on critical    Only fail CI on critical findings
 
 Exit codes: 0 clean/under threshold · 1 findings at/above --fail-on · 2 usage error
 `;
 
 function listRules(): void {
-  process.stdout.write(`\nskill-safe rules (${RULES.length})\n\n`);
+  process.stdout.write(`\nskillguardian rules (${RULES.length})\n\n`);
   for (const r of RULES) {
     process.stdout.write(`  ${r.id}  [${r.severity.padEnd(8)}] ${r.title}\n`);
     process.stdout.write(`         ${r.description}\n`);

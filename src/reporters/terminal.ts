@@ -28,7 +28,7 @@ function badge(sev: Severity): string {
 export function renderTerminal(report: ScanReport): string {
   const out: string[] = [];
   out.push("");
-  out.push(bold(`skill-safe v${report.version}`) + dim(`  ·  ${report.root}`));
+  out.push(bold(`skillguardian v${report.version}`) + dim(`  ·  ${report.root}`));
   out.push("");
 
   if (report.components.length === 0) {

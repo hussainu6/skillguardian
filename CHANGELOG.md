@@ -10,7 +10,7 @@ Initial release.
 
 ### Added
 
-- CLI `skill-safe` that scans a file or directory for AI agent skills, plugins,
+- CLI `skillguardian` that scans a file or directory for AI agent skills, plugins,
   and MCP configs.
 - 10 built-in detection rules (`SS001`–`SS010`) covering hidden Unicode, secret
   access, remote/dynamic execution, obfuscation, data egress, instruction
@@ -18,6 +18,6 @@ Initial release.
   read-secrets-and-exfiltrate combination.
 - A–F grading with a 0–100 risk score per component and overall.
 - Reporters: terminal, JSON, SARIF 2.1.0 (GitHub code scanning), and Markdown.
-- Composite GitHub Action (`hussainu6/skill-safe`) with SARIF upload.
+- Composite GitHub Action (`hussainu6/skillguardian`) with SARIF upload.
 - Programmatic API: `scan()`, `discover()`, `scanComponents()`, reporters, rules.
 - Test suite and CI across Node 20/22/24.

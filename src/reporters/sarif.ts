@@ -60,8 +60,8 @@ export function renderSarif(report: ScanReport): string {
       {
         tool: {
           driver: {
-            name: "skill-safe",
-            informationUri: "https://github.com/hussainu6/skill-safe",
+            name: "skillguardian",
+            informationUri: "https://github.com/hussainu6/skillguardian",
             version: report.version,
             rules,
           },

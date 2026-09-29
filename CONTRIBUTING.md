@@ -1,4 +1,4 @@
-# Contributing to skill-safe
+# Contributing to skillguardian
 
 Thanks for helping make the AI agent ecosystem safer. The most useful
 contributions are **new detection rules** and **real-world (defanged) examples**.
@@ -6,8 +6,8 @@ contributions are **new detection rules** and **real-world (defanged) examples**
 ## Setup
 
 ```bash
-git clone https://github.com/hussainu6/skill-safe
-cd skill-safe
+git clone https://github.com/hussainu6/skillguardian
+cd skillguardian
 npm install
 npm run build
 npm test
@@ -25,7 +25,7 @@ export const myRule: Rule = {
   id: "SS0NN",                       // next free SS number
   title: "Short human title",
   severity: "high",                  // critical | high | medium | low | info
-  description: "One line for `skill-safe rules`.",
+  description: "One line for `skillguardian rules`.",
   scan(component) {
     const matches = matchAll(component, /your-pattern/gi);
     return findingsFromMatches(

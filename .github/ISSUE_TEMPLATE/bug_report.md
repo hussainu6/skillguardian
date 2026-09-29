@@ -14,11 +14,11 @@ labels: ["bug"]
 <!-- The command you ran and a defanged input file if relevant. -->
 
 ```
-skill-safe ...
+skillguardian ...
 ```
 
 ## Environment
 
-- skill-safe version:
+- skillguardian version:
 - Node version:
 - OS:

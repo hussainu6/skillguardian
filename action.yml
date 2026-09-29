@@ -1,4 +1,4 @@
-name: "skill-safe"
+name: "skillguardian"
 description: "Scan AI agent skills, plugins, and MCP configs for security risks and upload results to GitHub code scanning."
 branding:
   icon: "shield"
@@ -20,29 +20,29 @@ inputs:
   output-file:
     description: "Where to write the report."
     required: false
-    default: "skill-safe.sarif"
+    default: "skillguardian.sarif"
   upload-sarif:
     description: "Upload the SARIF report to GitHub code scanning (requires security-events: write)."
     required: false
     default: "true"
   version:
-    description: "npm version/tag of skill-safe to run."
+    description: "npm version/tag of skillguardian to run."
     required: false
     default: "latest"
 
 runs:
   using: "composite"
   steps:
-    - name: Run skill-safe
+    - name: Run skillguardian
       shell: bash
       run: |
         set -euo pipefail
-        npx --yes skill-safe@${{ inputs.version }} "${{ inputs.path }}" \
+        npx --yes skillguardian@${{ inputs.version }} "${{ inputs.path }}" \
           --format "${{ inputs.format }}" \
           --output "${{ inputs.output-file }}" \
           --fail-on never
         # Always show a human-readable summary in the job log.
-        npx --yes skill-safe@${{ inputs.version }} "${{ inputs.path }}" \
+        npx --yes skillguardian@${{ inputs.version }} "${{ inputs.path }}" \
           --format markdown --fail-on never >> "$GITHUB_STEP_SUMMARY" || true
 
     - name: Upload SARIF
@@ -55,5 +55,5 @@ runs:
       shell: bash
       run: |
         set -euo pipefail
-        npx --yes skill-safe@${{ inputs.version }} "${{ inputs.path }}" \
+        npx --yes skillguardian@${{ inputs.version }} "${{ inputs.path }}" \
           --format terminal --fail-on "${{ inputs.fail-on }}"

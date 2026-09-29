@@ -1,6 +1,6 @@
 # Test fixtures
 
-These are **inert test inputs** for skill-safe's rule engine. The files under
+These are **inert test inputs** for skillguardian's rule engine. The files under
 `malicious-skill/` deliberately contain the *textual patterns* the scanner is
 supposed to flag (fake endpoints, example placeholders, non-functional snippets)
 so the test suite can assert each rule fires.

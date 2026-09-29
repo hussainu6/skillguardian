@@ -1,8 +1,8 @@
 # Security Policy
 
-## Reporting a vulnerability in skill-safe
+## Reporting a vulnerability in skillguardian
 
-If you find a security issue in skill-safe itself (for example, a way to make the
+If you find a security issue in skillguardian itself (for example, a way to make the
 scanner execute code from a file it is scanning, or a crafted input that causes a
 crash), please report it privately:
 
@@ -14,7 +14,7 @@ We aim to acknowledge within a few days.
 
 ## Reporting a malicious *public* skill or plugin
 
-If skill-safe helps you find a malicious component published somewhere public,
+If skillguardian helps you find a malicious component published somewhere public,
 please practice responsible disclosure:
 
 1. **Report it to the platform** hosting it (GitHub, the registry, the author)
@@ -28,6 +28,6 @@ The goal is a safer ecosystem, not a pillory.
 
 ## Scope
 
-skill-safe performs **static text analysis only**. It does not execute the files
+skillguardian performs **static text analysis only**. It does not execute the files
 it scans and does not start MCP servers. A clean report is a fast first filter,
 not a guarantee of safety.

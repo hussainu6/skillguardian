@@ -1,5 +1,5 @@
 /**
- * Core types for skill-safe.
+ * Core types for skillguardian.
  *
  * A "component" is one thing we scan: an agent skill, a plugin manifest, or an
  * MCP server config. A "rule" inspects a component's text and emits findings.
@@ -65,7 +65,7 @@ export interface Rule {
   id: string;
   title: string;
   severity: Severity;
-  /** One-line description shown in `skill-safe rules`. */
+  /** One-line description shown in `skillguardian rules`. */
   description: string;
   scan(component: Component): Finding[];
 }

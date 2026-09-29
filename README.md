@@ -1,13 +1,13 @@
 <div align="center">
 
-# 🛡️ skill-safe
+# 🛡️ skillguardian
 
 **Security scanner for AI agent skills, plugins, and MCP configs.**
 
 Catch prompt-injection, secret-exfiltration, and hidden-command patterns *before* you install them.
 
-[![CI](https://github.com/hussainu6/skill-safe/actions/workflows/ci.yml/badge.svg)](https://github.com/hussainu6/skill-safe/actions/workflows/ci.yml)
-[![npm](https://img.shields.io/npm/v/skill-safe.svg)](https://www.npmjs.com/package/skill-safe)
+[![CI](https://github.com/hussainu6/skillguardian/actions/workflows/ci.yml/badge.svg)](https://github.com/hussainu6/skillguardian/actions/workflows/ci.yml)
+[![npm](https://img.shields.io/npm/v/skillguardian.svg)](https://www.npmjs.com/package/skillguardian)
 [![license](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
 [![node](https://img.shields.io/badge/node-%3E%3D20-brightgreen.svg)](https://nodejs.org)
 
@@ -21,10 +21,10 @@ An AI agent skill is just a text file the agent *obeys*. A plugin or MCP server 
 
 That's a supply chain, and it has the same problem every supply chain has: **a malicious or careless component can turn your agent against you** — reading your `.env`, piping a remote script into your shell, or quietly telling the agent to skip its safety checks.
 
-`skill-safe` reads those files the way an attacker would and flags the patterns that matter, in **one command, with zero config, no account, and no data leaving your machine.**
+`skillguardian` reads those files the way an attacker would and flags the patterns that matter, in **one command, with zero config, no account, and no data leaving your machine.**
 
 ```bash
-npx skill-safe ./path-to-skill
+npx skillguardian ./path-to-skill
 ```
 
 <div align="center">
@@ -48,10 +48,10 @@ Overall:  F   score 0/100
 
 ```bash
 # one-off, no install
-npx skill-safe .
+npx skillguardian .
 
 # or add to a project
-npm install -D skill-safe
+npm install -D skillguardian
 ```
 
 Requires Node.js ≥ 20.
@@ -59,7 +59,7 @@ Requires Node.js ≥ 20.
 ## Usage
 
 ```bash
-skill-safe [path] [options]
+skillguardian [path] [options]
 ```
 
 | Option | Description | Default |
@@ -70,13 +70,13 @@ skill-safe [path] [options]
 | `--fail-on` | Exit non-zero at this severity or worse: `critical` `high` `medium` `low` `never` | `high` |
 | `--only` | Run only these rule ids, e.g. `--only SS003,SS010` | all |
 | `--skip` | Skip these rule ids | none |
-| `skill-safe rules` | List every rule | |
+| `skillguardian rules` | List every rule | |
 
 ```bash
-skill-safe ./skills                       # scan a folder of skills
-skill-safe . -f sarif -o skill-safe.sarif # SARIF for GitHub code scanning
-skill-safe . --fail-on critical           # only fail on critical findings
-skill-safe . -f json | jq '.grade'        # pipe into your own tooling
+skillguardian ./skills                       # scan a folder of skills
+skillguardian . -f sarif -o skillguardian.sarif # SARIF for GitHub code scanning
+skillguardian . --fail-on critical           # only fail on critical findings
+skillguardian . -f json | jq '.grade'        # pipe into your own tooling
 ```
 
 **Exit codes:** `0` clean or under threshold · `1` findings at/above `--fail-on` · `2` usage error.
@@ -105,8 +105,8 @@ Every component gets an **A–F grade** from a 0–100 risk score. One critical 
 Scan every pull request and see findings on the **Security** tab and inline on the diff:
 
 ```yaml
-# .github/workflows/skill-safe.yml
-name: skill-safe
+# .github/workflows/skillguardian.yml
+name: skillguardian
 on: [pull_request, push]
 jobs:
   scan:
@@ -116,7 +116,7 @@ jobs:
       security-events: write
     steps:
       - uses: actions/checkout@v5
-      - uses: hussainu6/skill-safe@v0
+      - uses: hussainu6/skillguardian@v0
         with:
           path: .
           fail-on: high
@@ -127,13 +127,13 @@ jobs:
 | `path` | File or directory to scan | `.` |
 | `fail-on` | `critical` `high` `medium` `low` `never` | `high` |
 | `format` | `sarif` `json` `markdown` | `sarif` |
-| `output-file` | Report path | `skill-safe.sarif` |
+| `output-file` | Report path | `skillguardian.sarif` |
 | `upload-sarif` | Upload to GitHub code scanning | `true` |
 
 ## Programmatic API
 
 ```ts
-import { scan } from "skill-safe";
+import { scan } from "skillguardian";
 
 const report = scan("./my-skill");
 console.log(report.grade, report.score);        // "A" 100
@@ -144,7 +144,7 @@ for (const c of report.components)
 
 ## How it works (and its limits)
 
-`skill-safe` is a **static, pattern-based** scanner. It reads files as text and matches known-dangerous shapes; it does **not** execute anything it scans, and it never starts your MCP servers.
+`skillguardian` is a **static, pattern-based** scanner. It reads files as text and matches known-dangerous shapes; it does **not** execute anything it scans, and it never starts your MCP servers.
 
 That means:
 

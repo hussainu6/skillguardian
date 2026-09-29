@@ -1,6 +1,6 @@
-# Copy this into .github/workflows/skill-safe.yml in any repo that ships
+# Copy this into .github/workflows/skillguardian.yml in any repo that ships
 # AI agent skills, plugins, or MCP configs.
-name: skill-safe
+name: skillguardian
 
 on:
   pull_request:
@@ -15,7 +15,7 @@ jobs:
       security-events: write # required to upload results to the Security tab
     steps:
       - uses: actions/checkout@v5
-      - uses: hussainu6/skill-safe@v0
+      - uses: hussainu6/skillguardian@v0
         with:
           path: .
           fail-on: high
