@@ -9,6 +9,9 @@ import { dangerousPermissions } from "./dangerous-permissions.js";
 import { impersonation } from "./impersonation.js";
 import { destructiveCommands } from "./destructive-commands.js";
 import { exfiltrationCombo } from "./exfiltration-combo.js";
+import { clipboardAccess } from "./clipboard-access.js";
+import { typosquatting } from "./typosquatting.js";
+import { overbroadAccess } from "./overbroad-access.js";
 
 /** All built-in rules, in stable id order. */
 export const RULES: Rule[] = [
@@ -22,6 +25,9 @@ export const RULES: Rule[] = [
   impersonation,
   destructiveCommands,
   exfiltrationCombo,
+  clipboardAccess,
+  typosquatting,
+  overbroadAccess,
 ];
 
 export {
@@ -35,4 +41,7 @@ export {
   impersonation,
   destructiveCommands,
   exfiltrationCombo,
+  clipboardAccess,
+  typosquatting,
+  overbroadAccess,
 };

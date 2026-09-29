@@ -4,6 +4,17 @@ All notable changes to this project are documented here. The format is based on
 [Keep a Changelog](https://keepachangelog.com/) and this project adheres to
 [Semantic Versioning](https://semver.org/).
 
+## [0.1.2] - 2026-09-29
+
+### Added
+
+- Three new detection rules:
+  - `SS011` — reads the system clipboard (can capture passwords, 2FA codes, tokens).
+  - `SS012` — installs a possible typosquatted package, using Damerau edit-distance
+    against a list of commonly-squatted packages (catches `expres`, `loadsh`,
+    `reqeusts`, and multiple packages on one install line).
+  - `SS013` — overbroad filesystem access (recursive home reads, `**` globs).
+
 ## [0.1.1] - 2026-09-29
 
 ### Changed

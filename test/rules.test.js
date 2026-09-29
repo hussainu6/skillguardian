@@ -42,6 +42,13 @@ test("mcp config flags disabled guardrails and egress", () => {
   assert.ok(ids.has("SS007"), "expected SS007 (disabled guardrails)");
 });
 
+test("sneaky skill trips clipboard, typosquat, and overbroad-access rules", () => {
+  const ids = ruleIds(findingsFor(join(fixtures, "sneaky-skill")));
+  assert.ok(ids.has("SS011"), "expected SS011 (clipboard)");
+  assert.ok(ids.has("SS012"), "expected SS012 (typosquatting)");
+  assert.ok(ids.has("SS013"), "expected SS013 (overbroad access)");
+});
+
 test("--only narrows to a single rule", () => {
   const report = scan(join(fixtures, "malicious-skill"), { only: ["SS006"] });
   const ids = ruleIds(report.components.flatMap((c) => c.findings));

@@ -10,7 +10,7 @@ import { renderTerminal } from "./reporters/terminal.js";
 import { scanComponents } from "./scanner.js";
 import type { Severity } from "./types.js";
 
-const VERSION = "0.1.1";
+const VERSION = "0.1.2";
 
 interface Args {
   path: string;

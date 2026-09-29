@@ -87,6 +87,9 @@ Every component gets an **A–F grade** from a 0–100 risk score. One critical 
 | `SS008` | Claims false authority or pressures the user | 🟦 low |
 | `SS009` | Runs destructive or irreversible commands (`rm -rf`, force-push, `DROP`) | 🟧 high |
 | `SS010` | **Reads secrets *and* sends data out** — a complete exfiltration chain | 🟥 critical |
+| `SS011` | Reads the system clipboard (passwords, 2FA codes, tokens) | 🟨 medium |
+| `SS012` | Installs a possible typosquatted package (`expres`, `reqeusts`) | 🟧 high |
+| `SS013` | Overbroad filesystem access (recursive home reads, `**` globs) | 🟨 medium |
 
 `SS010` is the one that matters most: it fires only when a *single component* both touches secrets and has a network egress path. Skills that look innocent rule-by-rule get caught by the combination.
 
