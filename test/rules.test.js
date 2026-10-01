@@ -61,6 +61,18 @@ test("hardcoded-secret skips obvious placeholders", () => {
   assert.ok(!ids.has("SS015"), "placeholder keys must not be flagged as SS015");
 });
 
+test("attack skill trips reverse-shell, theft, wallet, persistence, powershell, anti-forensics", () => {
+  const ids = ruleIds(findingsFor(join(fixtures, "attack-skill")));
+  for (const expected of ["SS017", "SS018", "SS019", "SS020", "SS021", "SS022"]) {
+    assert.ok(ids.has(expected), `expected ${expected} to fire`);
+  }
+});
+
+test("attack skill grades F", () => {
+  const report = scan(join(fixtures, "attack-skill"));
+  assert.equal(report.grade, "F");
+});
+
 test("hidden-unicode flags zero-width-in-text and bidi overrides (SS001)", () => {
   const ids = ruleIds(findingsFor(join(fixtures, "hidden-skill")));
   assert.ok(ids.has("SS001"), "expected SS001 to fire on genuine hidden Unicode");

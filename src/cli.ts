@@ -12,7 +12,7 @@ import { loadConfig } from "./config.js";
 import { badgeMarkdown } from "./badge.js";
 import type { Severity } from "./types.js";
 
-const VERSION = "0.3.0";
+const VERSION = "0.4.0";
 
 interface Args {
   path: string;

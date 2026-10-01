@@ -33,8 +33,8 @@
     <!-- 2 Rules -->
     <rect class="box" x="270" y="110" width="180" height="96" rx="12"/>
     <text x="360" y="138" text-anchor="middle" class="step" font-size="11">ANALYZE</text>
-    <text x="360" y="164" text-anchor="middle" class="title" font-size="14">16 detection rules</text>
-    <text x="360" y="184" text-anchor="middle" class="sub" font-size="11.5">SS001 – SS016</text>
+    <text x="360" y="164" text-anchor="middle" class="title" font-size="14">22 detection rules</text>
+    <text x="360" y="184" text-anchor="middle" class="sub" font-size="11.5">SS001 – SS022</text>
 
     <!-- 3 Grade -->
     <rect class="box" x="500" y="110" width="180" height="96" rx="12"/>

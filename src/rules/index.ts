@@ -15,6 +15,12 @@ import { overbroadAccess } from "./overbroad-access.js";
 import { insecureEndpoint } from "./insecure-endpoint.js";
 import { hardcodedSecret } from "./hardcoded-secret.js";
 import { autorunHooks } from "./autorun-hooks.js";
+import { reverseShell } from "./reverse-shell.js";
+import { browserTheft } from "./browser-theft.js";
+import { walletAccess } from "./wallet-access.js";
+import { persistence } from "./persistence.js";
+import { maliciousPowershell } from "./malicious-powershell.js";
+import { antiForensics } from "./anti-forensics.js";
 
 /** All built-in rules, in stable id order. */
 export const RULES: Rule[] = [
@@ -34,6 +40,12 @@ export const RULES: Rule[] = [
   insecureEndpoint,
   hardcodedSecret,
   autorunHooks,
+  reverseShell,
+  browserTheft,
+  walletAccess,
+  persistence,
+  maliciousPowershell,
+  antiForensics,
 ];
 
 export {
@@ -53,4 +65,10 @@ export {
   insecureEndpoint,
   hardcodedSecret,
   autorunHooks,
+  reverseShell,
+  browserTheft,
+  walletAccess,
+  persistence,
+  maliciousPowershell,
+  antiForensics,
 };

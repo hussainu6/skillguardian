@@ -18,7 +18,7 @@ export interface ScanOptions {
   ignore?: string[];
 }
 
-const VERSION = "0.3.0";
+const VERSION = "0.4.0";
 
 function selectRules(opts: ScanOptions): Rule[] {
   let rules = opts.rules ?? RULES;

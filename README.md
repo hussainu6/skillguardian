@@ -80,7 +80,7 @@ skillguardian badge .                        # -> [![skillguardian: A](…)](…
 ## How it works
 
 <div align="center">
-<img src="https://raw.githubusercontent.com/hussainu6/skillguardian/main/assets/architecture.svg" alt="skillguardian pipeline: discover components, apply 16 rules, grade A–F, report" width="820">
+<img src="https://raw.githubusercontent.com/hussainu6/skillguardian/main/assets/architecture.svg" alt="skillguardian pipeline: discover components, apply 22 rules, grade A–F, report" width="820">
 </div>
 
 ## What it detects
@@ -105,6 +105,12 @@ Every component gets an **A–F grade** from a 0–100 risk score. One critical 
 | `SS014` | Uses an insecure `http://` endpoint (non-localhost) | 🟨 medium |
 | `SS015` | Hardcoded API key or token (OpenAI, GitHub, AWS, Stripe, JWT…) | 🟧 high |
 | `SS016` | Auto-running hook executes a command (install / `SessionStart` / `PreToolUse`) | 🟧 high |
+| `SS017` | Reverse or bind shell (`/dev/tcp`, `nc -e`, `socat EXEC`) | 🟥 critical |
+| `SS018` | Reads browser / OS credential stores (`Login Data`, `key4.db`, keychain) | 🟧 high |
+| `SS019` | Accesses a crypto wallet or seed phrase (`wallet.dat`, keystore, mnemonic) | 🟧 high |
+| `SS020` | Installs a persistence mechanism (shell rc, cron, launchd, Run key) | 🟧 high |
+| `SS021` | Obfuscated / download-and-run PowerShell (`-enc`, hidden, `IEX` download) | 🟧 high |
+| `SS022` | Clears history or covers tracks (`history -c`, wipes event logs) | 🟨 medium |
 
 `SS010` is the one that matters most: it fires only when a *single component* both touches secrets and has a network egress path. Skills that look innocent rule-by-rule get caught by the combination.
 

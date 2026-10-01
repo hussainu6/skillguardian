@@ -4,6 +4,20 @@ All notable changes to this project are documented here. The format is based on
 [Keep a Changelog](https://keepachangelog.com/) and this project adheres to
 [Semantic Versioning](https://semver.org/).
 
+## [0.4.0] - 2026-10-01
+
+### Added
+
+- Six attack-focused detection rules (22 total):
+  - `SS017` reverse / bind shell (`/dev/tcp`, `nc -e`, `socat EXEC`, `pty.spawn`)
+  - `SS018` reads browser / OS credential stores (`Login Data`, `key4.db`, keychain)
+  - `SS019` accesses a crypto wallet or seed phrase (`wallet.dat`, keystore, mnemonic)
+  - `SS020` installs a persistence mechanism (shell rc, cron, launchd/systemd, Run key)
+  - `SS021` obfuscated / download-and-run PowerShell (`-enc`, hidden, `IEX` download)
+  - `SS022` clears history or covers tracks
+- New `attack-skill` fixture + tests. All six verified against the real-world
+  corpus with **zero false positives** (one `->` arrow FP in SS020 found and fixed).
+
 ## [0.3.0] - 2026-10-01
 
 ### Added
