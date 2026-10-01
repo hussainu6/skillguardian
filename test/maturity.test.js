@@ -2,6 +2,8 @@ import { test } from "node:test";
 import assert from "node:assert/strict";
 import { fileURLToPath } from "node:url";
 import { dirname, join } from "node:path";
+import { mkdtempSync, writeFileSync, rmSync } from "node:fs";
+import { tmpdir } from "node:os";
 import { scan, loadConfig } from "../dist/index.js";
 
 const here = dirname(fileURLToPath(import.meta.url));
@@ -41,6 +43,29 @@ test("skip via options removes a rule (config.disable path)", () => {
 });
 
 test("loadConfig returns empty object when no config file is present", () => {
-  const cfg = loadConfig(join(fixtures, "clean-skill"));
-  assert.deepEqual(cfg, {});
+  // Use an isolated temp dir so no .skillguardianrc.json above it is picked up.
+  const dir = mkdtempSync(join(tmpdir(), "sg-noconfig-"));
+  try {
+    assert.deepEqual(loadConfig(dir), {});
+  } finally {
+    rmSync(dir, { recursive: true, force: true });
+  }
+});
+
+test("loadConfig reads and validates a config file it finds", () => {
+  const dir = mkdtempSync(join(tmpdir(), "sg-config-"));
+  try {
+    writeFileSync(
+      join(dir, ".skillguardianrc.json"),
+      JSON.stringify({ disable: ["SS008"], failOn: "critical", minSeverity: "low", ignore: ["vendor/**"], bogus: 1 }),
+    );
+    const cfg = loadConfig(dir);
+    assert.deepEqual(cfg.disable, ["SS008"]);
+    assert.equal(cfg.failOn, "critical");
+    assert.equal(cfg.minSeverity, "low");
+    assert.deepEqual(cfg.ignore, ["vendor/**"]);
+    assert.ok(!("bogus" in cfg), "unknown keys are dropped");
+  } finally {
+    rmSync(dir, { recursive: true, force: true });
+  }
 });
