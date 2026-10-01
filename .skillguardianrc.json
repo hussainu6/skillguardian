@@ -1,0 +1,16 @@
+{
+  "_comment": "skillguardian is a scanner, not an agent skill — its own source necessarily contains the attack signatures it detects (rule regexes), plus intentionally-malicious test fixtures and docs that document attacks. None of that is a real skill to vet, so a self-scan ignores it. This file also serves as a live example of the `ignore` config.",
+  "ignore": [
+    "src/rules/**",
+    "src/reporters/**",
+    "src/cli.ts",
+    "test/**",
+    "docs/**",
+    "README.md",
+    "CHANGELOG.md",
+    "CONTRIBUTING.md",
+    "SECURITY.md",
+    "package.json",
+    "package-lock.json"
+  ]
+}
