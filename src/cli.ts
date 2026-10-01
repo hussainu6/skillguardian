@@ -9,9 +9,10 @@ import { renderSarif } from "./reporters/sarif.js";
 import { renderTerminal } from "./reporters/terminal.js";
 import { scanComponents } from "./scanner.js";
 import { loadConfig } from "./config.js";
+import { badgeMarkdown } from "./badge.js";
 import type { Severity } from "./types.js";
 
-const VERSION = "0.2.0";
+const VERSION = "0.3.0";
 
 interface Args {
   path: string;
@@ -22,9 +23,10 @@ interface Args {
   minSeverity?: Severity;
   only?: string[];
   skip?: string[];
+  ignore?: string[];
   noConfig: boolean;
   suppress: boolean;
-  command: "scan" | "rules" | "help" | "version";
+  command: "scan" | "rules" | "help" | "version" | "badge";
 }
 
 const SEVERITY_ORDER: Record<Severity, number> = { critical: 0, high: 1, medium: 2, low: 3, info: 4 };
@@ -46,6 +48,9 @@ function parseArgs(argv: string[]): Args {
     switch (a) {
       case "rules":
         args.command = "rules";
+        break;
+      case "badge":
+        args.command = "badge";
         break;
       case "-h":
       case "--help":
@@ -76,6 +81,9 @@ function parseArgs(argv: string[]): Args {
       case "--skip":
         args.skip = (argv[++i] ?? "").split(",").map((s) => s.trim()).filter(Boolean);
         break;
+      case "--ignore":
+        args.ignore = (argv[++i] ?? "").split(",").map((s) => s.trim()).filter(Boolean);
+        break;
       case "--no-config":
         args.noConfig = true;
         break;
@@ -102,6 +110,7 @@ skillguardian v${VERSION} — security scanner for AI agent skills, plugins & MC
 USAGE
   skillguardian [scan] [path] [options]
   skillguardian rules
+  skillguardian badge [path]
   skillguardian --help
 
 ARGUMENTS
@@ -114,14 +123,19 @@ OPTIONS
                        critical | high | medium | low | never   (default: high)
   --only <ids>         Run only these rule ids (comma-separated), e.g. --only SS003,SS010
   --skip <ids>         Skip these rule ids
+  --ignore <globs>     Skip paths matching these globs, e.g. --ignore "vendor/**,*.min.js"
   --min-severity <sev> Hide findings below this severity from the report
   --no-suppress        Ignore inline skillguardian-ignore comments
   --no-config          Ignore any .skillguardianrc.json
   -v, --version        Print version
   -h, --help           Show this help
 
+COMMANDS
+  rules                List every detection rule
+  badge [path]         Print a README grade badge (Markdown) for the scanned path
+
 CONFIG (.skillguardianrc.json, found at or above the scan path)
-  { "disable": ["SS008"], "failOn": "high", "minSeverity": "low" }
+  { "disable": ["SS008"], "failOn": "high", "minSeverity": "low", "ignore": ["vendor/**"] }
   CLI flags always override the config file.
 
 INLINE SUPPRESSION
@@ -179,14 +193,21 @@ function main(): void {
   const skip = [...(args.skip ?? []), ...(config.disable ?? [])];
   const failOn = args.failOnExplicit ? args.failOn : config.failOn ?? args.failOn;
   const minSeverity = args.minSeverity ?? config.minSeverity;
+  const ignore = [...(args.ignore ?? []), ...(config.ignore ?? [])];
 
-  const components = discover(target);
+  const components = discover(target, ignore.length ? ignore : undefined);
   const report = scanComponents(components, args.path, {
     only: args.only,
     skip: skip.length ? skip : undefined,
     minSeverity,
     suppressions: args.suppress,
   });
+
+  if (args.command === "badge") {
+    process.stdout.write(badgeMarkdown(report.grade) + "\n");
+    return;
+  }
+
   const rendered = render(report, args.format);
 
   if (args.output) {

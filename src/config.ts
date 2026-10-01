@@ -14,6 +14,8 @@ export interface SkillguardianConfig {
   failOn?: Severity | "never";
   /** Drop findings below this severity from the report. */
   minSeverity?: Severity;
+  /** Globs (matched against each file's relative path) to skip during discovery. */
+  ignore?: string[];
 }
 
 const CONFIG_NAME = ".skillguardianrc.json";
@@ -59,6 +61,9 @@ export function loadConfig(root: string): SkillguardianConfig {
   }
   if (typeof obj.minSeverity === "string" && VALID_SEV.has(obj.minSeverity)) {
     config.minSeverity = obj.minSeverity as Severity;
+  }
+  if (Array.isArray(obj.ignore)) {
+    config.ignore = obj.ignore.filter((x): x is string => typeof x === "string");
   }
   return config;
 }

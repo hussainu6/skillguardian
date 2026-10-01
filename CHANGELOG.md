@@ -4,6 +4,18 @@ All notable changes to this project are documented here. The format is based on
 [Keep a Changelog](https://keepachangelog.com/) and this project adheres to
 [Semantic Versioning](https://semver.org/).
 
+## [0.3.0] - 2026-10-01
+
+### Added
+
+- `skillguardian badge [path]` — prints a Markdown grade badge (color by grade)
+  for the scanned path, so a repo can show its skillguardian grade in its README.
+  Exposed in the API as `badgeUrl` / `badgeMarkdown` / `badgeHtml`.
+- `--ignore <globs>` flag and `ignore` config key — skip paths during discovery
+  (e.g. `vendor/**`, `*.min.js`), with a tiny built-in glob matcher.
+- README: table of contents, a "How it compares" table, and a "Show your grade"
+  section. `.editorconfig` for consistent formatting.
+
 ## [0.2.0] - 2026-09-29
 
 ### Added

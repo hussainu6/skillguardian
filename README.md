@@ -16,6 +16,8 @@
 
 ---
 
+**[Why](#why)** · **[Install](#install)** · **[Usage](#usage)** · **[Rules](#what-it-detects)** · **[Config & suppression](#configuration--suppression)** · **[GitHub Action](#github-action)** · **[API](#programmatic-api)** · **[Limitations](#limitations)** · **[Contributing](#contributing)**
+
 ## Why
 
 An AI agent skill is just a text file the agent *obeys*. A plugin or MCP server extends what the agent can do. You copy them from GitHub, gists, and registries and drop them straight into Claude Code, Cursor, and other agents — usually without reading every line.
@@ -60,13 +62,17 @@ skillguardian [path] [options]
 | `--fail-on` | Exit non-zero at this severity or worse: `critical` `high` `medium` `low` `never` | `high` |
 | `--only` | Run only these rule ids, e.g. `--only SS003,SS010` | all |
 | `--skip` | Skip these rule ids | none |
+| `--ignore` | Skip paths matching globs, e.g. `--ignore "vendor/**,*.min.js"` | none |
+| `--min-severity` | Hide findings below this severity | — |
 | `skillguardian rules` | List every rule | |
+| `skillguardian badge` | Print a README grade badge | |
 
 ```bash
 skillguardian ./skills                       # scan a folder of skills
 skillguardian . -f sarif -o skillguardian.sarif # SARIF for GitHub code scanning
 skillguardian . --fail-on critical           # only fail on critical findings
 skillguardian . -f json | jq '.grade'        # pipe into your own tooling
+skillguardian badge .                        # -> [![skillguardian: A](…)](…)
 ```
 
 **Exit codes:** `0` clean or under threshold · `1` findings at/above `--fail-on` · `2` usage error.
@@ -127,6 +133,16 @@ Silence a reviewed, accepted finding right where it lives:
 
 CLI flags always win over the config file; run `--no-config` or `--no-suppress` to ignore either.
 
+## Show your grade
+
+If your skills pass, say so. `skillguardian badge` prints a Markdown badge for the scanned path:
+
+```bash
+skillguardian badge .
+```
+
+[![skillguardian: A](https://img.shields.io/badge/skillguardian-A-brightgreen)](https://github.com/hussainu6/skillguardian)
+
 ## GitHub Action
 
 Scan every pull request and see findings on the **Security** tab and inline on the diff:
@@ -169,7 +185,7 @@ for (const c of report.components)
     console.log(f.ruleId, f.severity, f.file, f.message);
 ```
 
-## How it works (and its limits)
+## Limitations
 
 `skillguardian` is a **static, pattern-based** scanner. It reads files as text and matches known-dangerous shapes; it does **not** execute anything it scans, and it never starts your MCP servers.
 
@@ -180,6 +196,19 @@ That means:
 - ⚠️ Some rules (like `SS008`) are *signals*, not proof. A real vendor skill may legitimately trip them.
 
 Use it as one layer. Still read skills you grant real power to.
+
+## How it compares
+
+| | skillguardian | Hand review | Enterprise agent scanners |
+| --- | :---: | :---: | :---: |
+| Cost | Free, MIT | Your time | Paid / account |
+| Setup | `npx`, zero config | — | Sign-up + token |
+| Runs offline | ✅ | ✅ | Often phones home |
+| Catches the obvious & careless | ✅ | Depends on attention | ✅ |
+| Catches novel, targeted attacks | ⚠️ not alone | ✅ if careful | ✅ |
+| CI + README badge | ✅ | — | Varies |
+
+skillguardian's job is to be the cheap, always-on first gate so human review and heavier tooling spend their attention where it matters.
 
 ## Contributing
 

@@ -14,9 +14,11 @@ export interface ScanOptions {
   minSeverity?: Severity;
   /** Honor inline `skillguardian-ignore` comments (default: true). */
   suppressions?: boolean;
+  /** Globs (matched against each file's relative path) to skip during discovery. */
+  ignore?: string[];
 }
 
-const VERSION = "0.2.0";
+const VERSION = "0.3.0";
 
 function selectRules(opts: ScanOptions): Rule[] {
   let rules = opts.rules ?? RULES;

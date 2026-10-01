@@ -14,6 +14,7 @@ export { renderSarif } from "./reporters/sarif.js";
 export { renderMarkdown } from "./reporters/markdown.js";
 export { renderTerminal } from "./reporters/terminal.js";
 export { loadConfig, type SkillguardianConfig } from "./config.js";
+export { badgeUrl, badgeMarkdown, badgeHtml } from "./badge.js";
 export * from "./types.js";
 
 import { discover } from "./discover.js";
@@ -22,6 +23,6 @@ import type { ScanReport } from "./types.js";
 
 /** Convenience: discover components under `path` and scan them. */
 export function scan(path: string, opts: ScanOptions = {}): ScanReport {
-  const components = discover(path);
+  const components = discover(path, opts.ignore);
   return scanComponents(components, path, opts);
 }

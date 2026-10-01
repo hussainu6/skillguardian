@@ -99,14 +99,46 @@ function classify(files: ScannedFile[], rootName: string): Component {
   return { kind, name: rootName === "." ? basename(process.cwd()) : rootName.split("/").pop() ?? rootName, root: rootName, files };
 }
 
+/** Convert a minimal glob (`*`, `**`, `?`) to a RegExp anchored to the whole path. */
+function globToRegExp(glob: string): RegExp {
+  let re = "";
+  for (let i = 0; i < glob.length; i++) {
+    const c = glob[i]!;
+    if (c === "*") {
+      if (glob[i + 1] === "*") {
+        re += ".*"; // ** matches across path separators
+        i++;
+        if (glob[i + 1] === "/") i++; // swallow the slash after **
+      } else {
+        re += "[^/]*";
+      }
+    } else if (c === "?") {
+      re += "[^/]";
+    } else if (".+^${}()|[]\\".includes(c)) {
+      re += "\\" + c;
+    } else {
+      re += c;
+    }
+  }
+  return new RegExp("^" + re + "$");
+}
+
+function makeIgnore(patterns: string[] | undefined): (path: string) => boolean {
+  if (!patterns || patterns.length === 0) return () => false;
+  const res = patterns.map(globToRegExp);
+  return (path: string) => res.some((r) => r.test(path));
+}
+
 /**
  * Discover components under `root`. Files are grouped by their containing
  * directory; each group becomes one component whose kind is inferred from the
  * files present (SKILL.md → skill, mcp config → mcp, plugin manifest → plugin).
+ * `ignore` is a list of globs (matched against each file's relative path) to skip.
  */
-export function discover(root: string): Component[] {
+export function discover(root: string, ignore?: string[]): Component[] {
   const st = statSync(root);
   const raws: RawFile[] = [];
+  const ignored = makeIgnore(ignore);
 
   if (st.isFile()) {
     raws.push({ path: root, relativePath: basename(root) });
@@ -116,6 +148,7 @@ export function discover(root: string): Component[] {
 
   const byDir = new Map<string, ScannedFile[]>();
   for (const raw of raws) {
+    if (ignored(raw.relativePath)) continue;
     const sf = readFile(raw);
     if (!sf) continue;
     const key = componentRoot(sf.relativePath);
