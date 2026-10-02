@@ -2,6 +2,7 @@ import { gradeForScore, scoreFindings, tallyTotals } from "./grade.js";
 import { RULES } from "./rules/index.js";
 import type { Component, ComponentResult, Finding, Rule, ScanReport, Severity } from "./types.js";
 import { emptyTotals } from "./grade.js";
+import { capabilitiesFor, detectComposedRisks, unionCapabilities } from "./capabilities.js";
 
 export interface ScanOptions {
   /** Restrict to these rule ids (default: all). */
@@ -18,7 +19,7 @@ export interface ScanOptions {
   ignore?: string[];
 }
 
-const VERSION = "0.4.0";
+const VERSION = "0.5.0";
 
 function selectRules(opts: ScanOptions): Rule[] {
   let rules = opts.rules ?? RULES;
@@ -48,6 +49,7 @@ export function scanComponent(component: Component, opts: ScanOptions = {}): Com
   return {
     component: { kind: component.kind, name: component.name, root: component.root },
     findings,
+    capabilities: capabilitiesFor(findings),
     score,
     grade: gradeForScore(score),
   };
@@ -109,6 +111,8 @@ export function scanComponents(components: Component[], root: string, opts: Scan
     totals,
     score,
     grade: gradeForScore(score),
+    capabilities: unionCapabilities(results),
+    composedRisks: detectComposedRisks(results),
   };
 }
 

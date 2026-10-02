@@ -1,4 +1,5 @@
 import type { ScanReport, Severity } from "../types.js";
+import { CAPABILITY_LABEL } from "../capabilities.js";
 
 const useColor = process.stdout.isTTY && process.env.NO_COLOR === undefined;
 const c = (code: string, s: string) => (useColor ? `\u001b[${code}m${s}\u001b[0m` : s);
@@ -50,6 +51,23 @@ export function renderTerminal(report: ScanReport): string {
         if (f.evidence) out.push(`      ${dim("evidence:")} ${f.evidence}`);
         out.push(`      ${dim("fix:")} ${f.remediation}`);
       }
+    }
+    if (comp.capabilities.length) {
+      out.push("   " + dim("capabilities: ") + comp.capabilities.map((cap) => CAPABILITY_LABEL[cap]).join(dim(" · ")));
+    }
+    out.push("");
+  }
+
+  if (report.composedRisks.length) {
+    out.push(bold("Cross-skill risks") + dim(" (capabilities combined across separate components)"));
+    for (const r of report.composedRisks) {
+      out.push(`   ${SEV_COLOR.high(" COMPOSED ")} ${bold(r.id)} ${r.title}`);
+      out.push(`      ${r.message}`);
+      for (const leg of r.legs) {
+        const loc = leg.line ? `${leg.file}:${leg.line}` : leg.file;
+        out.push(`      ${dim("·")} ${CAPABILITY_LABEL[leg.capability]} in ${bold(leg.component)} ${dim(`(${leg.ruleId} · ${loc})`)}`);
+      }
+      out.push(`      ${dim("fix:")} ${r.remediation}`);
     }
     out.push("");
   }

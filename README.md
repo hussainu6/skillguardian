@@ -116,6 +116,23 @@ Every component gets an **A–F grade** from a 0–100 risk score. One critical 
 
 These rules were tuned against real public repositories to keep false positives low — see [**docs/FINDINGS.md**](docs/FINDINGS.md) for that write-up.
 
+## Capability analysis & cross-skill risks
+
+A finding tells you a pattern is present. A **capability** tells you what authority installing a component grants your agent — `secrets`, `filesystem`, `network`, `exec`, `persistence`, `control`, `evasion`. skillguardian summarizes the capability surface of each component so you can answer the question that actually matters: *what new power does this give the agent, and can those powers combine?*
+
+That composition is the dangerous part. `SS010` already flags a single component that **both** reads secrets and reaches the network. But the same chain can hide across **two separate skills** — one reads your `.env`, another (installed later, looks unrelated) has network access. Each grades fine alone; together they're an exfiltration path. skillguardian raises that as a scan-level **cross-skill risk**:
+
+```
+Cross-skill risks (capabilities combined across separate components)
+    COMPOSED  SX01 Composed exfiltration risk (secrets + network across skills)
+      · 🔑 secrets in env-reader        (SS002)
+      · 🌐 network in diagnostics-uploader (SS005)
+```
+
+Static scanning can't prove safety, but it can establish a **minimum trust threshold** — a capability budget — before an agent is handed filesystem, credential, or network access.
+
+> This feature was built from [dev.to](https://dev.to/hussainu6/your-ai-agent-installs-skills-like-npm-packages-but-nobodys-scanning-them-1gm1) feedback on exactly this: the real boundary is capability composition, not any single skill.
+
 ## Configuration & suppression
 
 Tune skillguardian without touching code:

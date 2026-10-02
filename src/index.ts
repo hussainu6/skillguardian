@@ -15,6 +15,13 @@ export { renderMarkdown } from "./reporters/markdown.js";
 export { renderTerminal } from "./reporters/terminal.js";
 export { loadConfig, type SkillguardianConfig } from "./config.js";
 export { badgeUrl, badgeMarkdown, badgeHtml } from "./badge.js";
+export {
+  RULE_CAPABILITIES,
+  CAPABILITY_LABEL,
+  capabilitiesFor,
+  detectComposedRisks,
+  unionCapabilities,
+} from "./capabilities.js";
 export * from "./types.js";
 
 import { discover } from "./discover.js";

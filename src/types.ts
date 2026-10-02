@@ -70,12 +70,42 @@ export interface Rule {
   scan(component: Component): Finding[];
 }
 
+/**
+ * The authority a component exercises. A finding tells you a pattern is present;
+ * a capability tells you what power installing the component grants the agent.
+ */
+export type Capability =
+  | "secrets"
+  | "filesystem"
+  | "network"
+  | "exec"
+  | "evasion"
+  | "control"
+  | "persistence";
+
 /** Result of scanning one component. */
 export interface ComponentResult {
   component: Pick<Component, "kind" | "name" | "root">;
   findings: Finding[];
+  /** Capabilities this component exercises, derived from its findings. */
+  capabilities: Capability[];
   score: number;
   grade: Grade;
+}
+
+/**
+ * A risk that emerges from combining capabilities across *separate* components —
+ * e.g. one skill reads secrets and a different skill can reach the network, which
+ * together form an exfiltration chain neither looks like alone.
+ */
+export interface ComposedRisk {
+  id: string;
+  title: string;
+  severity: Severity;
+  message: string;
+  remediation: string;
+  /** The capability legs of the chain and where each was observed. */
+  legs: { capability: Capability; component: string; ruleId: string; file: string; line?: number }[];
 }
 
 /** Aggregate result for a whole scan. */
@@ -87,6 +117,10 @@ export interface ScanReport {
   totals: Record<Severity, number>;
   score: number;
   grade: Grade;
+  /** Capabilities present anywhere in the scan. */
+  capabilities: Capability[];
+  /** Cross-component capability-composition risks. */
+  composedRisks: ComposedRisk[];
 }
 
 export type Grade = "A" | "B" | "C" | "D" | "F";

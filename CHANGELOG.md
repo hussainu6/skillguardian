@@ -4,6 +4,26 @@ All notable changes to this project are documented here. The format is based on
 [Keep a Changelog](https://keepachangelog.com/) and this project adheres to
 [Semantic Versioning](https://semver.org/).
 
+## [0.5.0] - 2026-10-01
+
+### Added
+
+- **Capability analysis.** Every rule now maps to a capability (`secrets`,
+  `filesystem`, `network`, `exec`, `persistence`, `control`, `evasion`), and each
+  component reports the capability surface installing it would grant the agent.
+- **Cross-skill composed-risk detection.** When one component reads secrets (or
+  touches broad filesystem) and a *different* component can reach the network,
+  skillguardian raises a scan-level `SX01` / `SX02` risk — the exfiltration chain
+  that neither skill looks like on its own. SS010 catches this within one
+  component; this catches it across separate skills.
+- Terminal and Markdown reporters show per-component capabilities and a
+  "Cross-skill risks" section; JSON/API expose `capabilities` and `composedRisks`.
+- API: `capabilitiesFor`, `detectComposedRisks`, `unionCapabilities`,
+  `RULE_CAPABILITIES`, `CAPABILITY_LABEL`, and `Capability` / `ComposedRisk` types.
+
+Thanks to the dev.to feedback from Reid Marlow and Mateo Ruiz, who both pointed
+at capability composition across skills as the real boundary.
+
 ## [0.4.0] - 2026-10-01
 
 ### Added
